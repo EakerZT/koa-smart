@@ -1,6 +1,6 @@
 import { TypeAny } from './TypeAny';
 import { ResolveType } from './TypeTyping';
-declare type UnroleResolveType<T extends [...any[]]> = T extends [infer Head, ...infer Tail] ? [
+type UnroleResolveType<T extends [...any[]]> = T extends [infer Head, ...infer Tail] ? [
     ResolveType<Head>,
     ...UnroleResolveType<Tail>
 ] : [];

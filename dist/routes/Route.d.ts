@@ -27,7 +27,7 @@ export interface RouteParams {
      */
     disable: boolean;
 }
-declare type Decorator = Function;
+type Decorator = Function;
 interface RateLimitOptions {
     options: {
         rateLimit: any;

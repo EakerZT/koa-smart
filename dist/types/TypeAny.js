@@ -190,6 +190,7 @@ class TypeAny {
     _initValues(value) {
         this._value = value;
         this._error = '';
+        this._errors = {};
         this._hasError = false;
         this._isValueNull = false;
     }
