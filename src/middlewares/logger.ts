@@ -1,8 +1,8 @@
 import chalk from 'chalk';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 function dateFormat(date) {
-  return moment(date).format('YYYY/MM/DD, h:mm:ss a');
+  return dayjs(date).format('YYYY/MM/DD, h:mm:ss a');
 }
 
 function getColor(status) {

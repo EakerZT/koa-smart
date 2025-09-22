@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import cloneDeep from 'lodash.clonedeep';
 
 /**
@@ -26,7 +26,7 @@ export function dateYYYYMMDD(date: Date): string {
   if (!date) {
     return undefined;
   }
-  return moment(date).format('YYYY-MM-DD');
+  return dayjs(date).format('YYYY-MM-DD');
 }
 
 /**
@@ -52,6 +52,7 @@ export function trim(elem: string | any): string | null {
 export async function timeout(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 export const wait = timeout;
 
 /**
