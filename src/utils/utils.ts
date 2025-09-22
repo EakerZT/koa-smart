@@ -147,14 +147,6 @@ interface KeyValue {
 }
 
 /**
- * @desc transforms an Object into an array of key-value pairs
- * @todo check if this is right => currently returns array of values and use interface KeyValue
- */
-export function objValToArray(obj: Object): Array<any> {
-  return Object.keys(obj).map(k => obj[k]);
-}
-
-/**
  * @desc join array by adding double cote on string
  */
 export function joinWithCote(elems: Array<any>, delimiter = ', '): string {

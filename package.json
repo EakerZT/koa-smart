@@ -1,6 +1,6 @@
 {
   "name": "@eakerzt/koa-smart",
-  "version": "4.1.3",
+  "version": "4.1.4",
   "publishConfig": {
     "access": "public"
   },
@@ -9,7 +9,7 @@
     "email": "contact@ysocorp.com",
     "url": "http://ysocorp.com"
   },
-  "description": "A framework base on Koajs2 with Decorator, Params checker and a base of modules (cors, bodyparser, compress, I18n, etc…) to let you develop smart api easily",
+  "description": "A framework base on Koajs3 with Decorator, Params checker and a base of modules (cors, bodyparser, compress, I18n, etc…) to let you develop smart api easily",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

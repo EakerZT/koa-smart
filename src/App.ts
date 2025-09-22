@@ -1,5 +1,5 @@
 import { join as pathJoin } from 'path';
-import { readdirSync } from 'fs';
+import { readdirSync, statSync } from 'fs';
 
 import Koa from 'koa';
 import locale from 'koa-locale';
@@ -7,9 +7,8 @@ import locale from 'koa-locale';
 import Route from './routes/Route';
 import notFound from './middlewares/notFound';
 
-import { objValToArray } from './utils/utils';
 import * as docGenerator from './utils/docGenerator';
-import { Server } from 'http';
+import { Server } from 'node:http';
 
 export default class App {
   /**
@@ -47,28 +46,6 @@ export default class App {
     docGenerator.init(docPath, generateDoc);
   }
 
-  /**
-   * @ignore
-   */
-  _getAllRoutes(path, prefix) {
-    this.routes[prefix] = this.routes[prefix] || {};
-
-    readdirSync(path)
-      .filter(file => file.endsWith('.js') || file.endsWith('.ts'))
-      .forEach(file => {
-        const RouteClass = require(pathJoin(path, file)).default;
-        if (RouteClass && RouteClass.prototype instanceof Route) {
-          const route = new RouteClass({
-            prefix,
-            koaApp: this.koaApp,
-            routes: this.routes[prefix],
-            ...this.routeParam,
-          });
-          this.routes[prefix][route.constructor.name] = route;
-        }
-      });
-    return objValToArray(this.routes[prefix]);
-  }
 
   /**
    * @access public
@@ -98,14 +75,42 @@ export default class App {
    * @param {string} [prefix='/'] an optional prefix to prepend to all of the folder's routes
    * @return { }
    */
-  mountFolder(pathFolder, prefix = '/', opt: any = {}) {
+  mountFolder(pathFolder: string, prefix = '/', opt: any = {}) {
     const { generateDoc = true } = opt;
-    const routes = this._getAllRoutes(pathFolder, prefix);
-    for (const route of routes) {
+    if (!(prefix in this.routes)) {
+      this.routes[prefix] = {};
+    }
+
+    const mountRoute = (filepath: string) => {
+      const RouteClass = require(filepath).default;
+      const route = new RouteClass({
+        prefix,
+        koaApp: this.koaApp,
+        routes: this.routes[prefix],
+        ...this.routeParam,
+      });
       route.generateDoc = generateDoc;
       route.mount();
       this.koaApp.use(route.koaRouter.middleware());
-    }
+      this.routes[prefix][route.constructor.name] = route;
+    };
+
+    const processFolder = (folder: string) => {
+      const list =  readdirSync(folder);
+      for (const f of list) {
+        const fullFilepath = pathJoin(folder, f);
+        const stat = statSync(fullFilepath);
+        if (stat.isFile()) {
+          if (f.endsWith('.js') || f.endsWith('.ts')) {
+            mountRoute(fullFilepath);
+          }
+        } else {
+          processFolder(fullFilepath);
+        }
+      }
+    };
+
+    processFolder(pathFolder);
   }
 
   /**

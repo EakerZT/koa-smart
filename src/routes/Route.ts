@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import KoaRouter from 'koa-router';
+import KoaRouter from '@koa/router';
 import chalk from 'chalk';
 import { RateLimit } from 'koa2-ratelimit';
 import Koa from 'koa';

@@ -1,6 +1,6 @@
 import kcompress from 'koa-compress';
 import khelmet from 'koa-helmet';
-import kbodyParser from 'koa-body';
+import kbodyParser from '@koa/bodyparser';
 import kcors from 'kcors';
 import ki18n from 'koa-i18n';
 
